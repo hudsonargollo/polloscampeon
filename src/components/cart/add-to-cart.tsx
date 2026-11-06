@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCart, type CartItem } from "./cart-provider";
 import { useToast } from "@/components/ui/toast";
+import { formatPrice } from "@/lib/format";
 
 export function AddToCart({ product }: { product: Omit<CartItem, "quantity"> }) {
   const { add } = useCart();
@@ -11,12 +12,21 @@ export function AddToCart({ product }: { product: Omit<CartItem, "quantity"> }) 
   const router = useRouter();
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
+  const addedTimer = useRef<number | null>(null);
   const soldOut = product.stock <= 0;
+
+  useEffect(
+    () => () => {
+      if (addedTimer.current) window.clearTimeout(addedTimer.current);
+    },
+    []
+  );
 
   function handleAdd() {
     add(product, qty);
     setAdded(true);
-    setTimeout(() => setAdded(false), 1800);
+    if (addedTimer.current) window.clearTimeout(addedTimer.current);
+    addedTimer.current = window.setTimeout(() => setAdded(false), 1800);
     toast.success(`${qty} × ${product.name} agregado a tu carrito`, { title: "Agregado al carrito" });
   }
 
@@ -36,23 +46,37 @@ export function AddToCart({ product }: { product: Omit<CartItem, "quantity"> }) 
     );
   }
 
+  const stepBtn =
+    "flex h-11 w-10 items-center justify-center text-lg text-ink transition hover:text-accent-strong disabled:cursor-not-allowed disabled:opacity-35 dark:text-light";
+
   return (
     <div className="space-y-3">
       <div className="flex flex-col gap-3 sm:flex-row">
-        <div className="flex items-center justify-center rounded-full border border-[var(--line-strong)]">
+        <div
+          className="flex items-center justify-center rounded-full border border-[var(--line-strong)] bg-surface"
+          role="group"
+          aria-label={`Cantidad de ${product.name}`}
+        >
           <button
             type="button"
             onClick={() => setQty((q) => Math.max(1, q - 1))}
-            className="px-4 py-3 text-lg text-ink transition hover:text-accent-strong"
+            disabled={qty <= 1}
+            className={`rounded-l-full ${stepBtn}`}
             aria-label="Quitar una unidad"
           >
             −
           </button>
-          <span className="w-8 text-center text-sm font-medium">{qty}</span>
+          <span
+            aria-live="polite"
+            className="min-w-8 text-center text-sm font-semibold tabular-nums"
+          >
+            {qty}
+          </span>
           <button
             type="button"
             onClick={() => setQty((q) => Math.min(product.stock, q + 1))}
-            className="px-4 py-3 text-lg text-ink transition hover:text-accent-strong"
+            disabled={qty >= product.stock}
+            className={`rounded-r-full ${stepBtn}`}
             aria-label="Agregar una unidad"
           >
             +
@@ -62,9 +86,19 @@ export function AddToCart({ product }: { product: Omit<CartItem, "quantity"> }) 
         <button
           type="button"
           onClick={handleAdd}
-          className="flex-1 rounded-full border border-[var(--line-strong)] bg-surface px-8 py-3.5 text-sm font-semibold uppercase tracking-[0.08em] text-ink transition hover:border-accent hover:text-accent-strong"
+          className={`flex flex-1 items-center justify-center gap-2.5 rounded-full px-6 py-3.5 text-sm font-semibold uppercase tracking-[0.08em] transition duration-200 active:scale-[0.98] sm:px-8 ${
+            added
+              ? "bg-accent text-brand-deep shadow-[0_16px_34px_-16px_rgba(244,218,1,0.95)]"
+              : "bg-brand text-light shadow-[0_16px_34px_-16px_rgba(234,9,41,0.8)] hover:bg-brand-deep"
+          }`}
         >
-          {added ? "Agregado al carrito ✓" : "Agregar al carrito"}
+          {added ? <CheckIcon /> : <CartIcon />}
+          <span>{added ? "Agregado" : "Agregar al carrito"}</span>
+          {!added && (
+            <span className="border-l border-light/30 pl-2.5 tabular-nums opacity-90">
+              {formatPrice(product.price * qty)}
+            </span>
+          )}
         </button>
       </div>
 
@@ -76,5 +110,23 @@ export function AddToCart({ product }: { product: Omit<CartItem, "quantity"> }) 
         Comprar ahora
       </button>
     </div>
+  );
+}
+
+function CartIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+      <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 8H6" strokeLinecap="round" strokeLinejoin="round" />
+      <circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none" />
+      <circle cx="18" cy="20" r="1.4" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true">
+      <path d="M5 12.5l4.5 4.5L19 6.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
   );
 }
