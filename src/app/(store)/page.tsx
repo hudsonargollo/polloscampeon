@@ -266,8 +266,8 @@ export default async function HomePage() {
             <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-panel">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="/imgs/atencion-local.webp"
-                alt="Atendiendo un pedido en Pollos Campeón"
+                src="/imgs/historia-campeon.webp"
+                alt="Fachada de una sucursal Pollos Campeón"
                 className="h-full w-full object-cover"
               />
               <div className="pointer-events-none absolute inset-3 rounded-xl border border-[rgba(246,243,232,0.6)]" />
