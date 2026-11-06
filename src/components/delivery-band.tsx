@@ -186,7 +186,7 @@ export function DeliveryBand({
               </div>
 
               <div className="relative grid grid-cols-2 gap-2">
-                <Chip icon={<StoreIcon />} label="Pedido por WhatsApp" />
+                <Chip icon={<StoreIcon />} label="Pide Ahora" />
                 <Chip icon={<CashIcon />} label="Pago al recibir" />
               </div>
             </div>
