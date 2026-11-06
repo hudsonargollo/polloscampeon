@@ -169,13 +169,16 @@ p {
   color: transparent;
 }
 
-/* Thin uppercase label */
-.eyebrow {
-  font-weight: 600;
-  font-size: 0.72rem;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-  color: var(--color-brand);
+/* Thin uppercase label. Kept in the components layer so a text-* utility at
+   the call site can override the default red (unlayered CSS would win). */
+@layer components {
+  .eyebrow {
+    font-weight: 600;
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--color-brand);
+  }
 }
 
 /* Double-line frame for editorial panels */
