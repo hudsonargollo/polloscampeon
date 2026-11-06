@@ -263,7 +263,7 @@ export default async function HomePage() {
       <section className="bg-cream px-5 py-20">
         <div className="mx-auto grid max-w-6xl items-center gap-12 md:grid-cols-2">
           <Reveal>
-            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-panel">
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-panel">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/imgs/historia-campeon.webp"
@@ -278,7 +278,7 @@ export default async function HomePage() {
               <span className="eyebrow">Nuestra historia</span>
               <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight text-ink text-balance sm:text-5xl">
                 <SplitText text="Tu pollo" />{" "}
-                <span className="brand-text">campeón</span>
+                <span className="text-brand">campeón</span>
               </h2>
               <p className="mt-5 text-pretty leading-relaxed text-ink/80">
                 En Pollos Campeón preparamos el pollo como nos gusta: marinado con el
