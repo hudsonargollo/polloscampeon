@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { Emblem } from "@/components/brand/emblem";
+import { BrandLogo } from "@/components/brand/logo";
 
 export const metadata = { title: "Página no encontrada", robots: { index: false } };
 
 export default function NotFound() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-5 py-20 text-center">
-      <Emblem size={52} className="text-accent-strong" />
+      <BrandLogo className="h-14" />
       <p className="mt-6 font-display text-6xl font-bold text-accent-strong sm:text-7xl">404</p>
       <h1 className="mt-2 font-display text-3xl font-semibold text-ink sm:text-4xl">
         No encontramos esta página

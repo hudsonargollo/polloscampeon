@@ -4,7 +4,7 @@ import { requireCustomer } from "@/lib/customer-auth";
 import { prisma } from "@/lib/prisma";
 import { formatPrice, formatDate } from "@/lib/format";
 import { StatusBadge } from "@/components/status-badge";
-import { Emblem } from "@/components/brand/emblem";
+import { BrandLogo } from "@/components/brand/logo";
 import { logoutAction, startEmailVerification } from "../auth-actions";
 
 export const metadata: Metadata = {
@@ -63,7 +63,7 @@ export default async function AccountPage() {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <Emblem size={38} className="text-accent-strong" />
+          <BrandLogo className="h-9" />
           <div>
             <h1 className="font-display text-3xl font-bold text-ink">Hola, {firstName}</h1>
             <p className="text-sm text-muted">Te damos la bienvenida a tu cuenta</p>

@@ -1,6 +1,5 @@
-// The store's brand mark — the Pollos Campeón logo on a red badge. `ChickenMark`
-// is the line-art drumstick used for faint decorative watermarks where the
-// full-colour mark would be too heavy.
+// `ChickenMark` is the line-art drumstick used for faint decorative watermarks,
+// where the full-colour lockup (see brand/logo.tsx) would be too heavy.
 
 type MarkProps = {
   size?: number;
@@ -10,21 +9,6 @@ type MarkProps = {
   /** Highlight used by the drumstick watermark (bone, steam). */
   accent?: string;
 };
-
-export function Emblem({ size = 44, className = "" }: MarkProps) {
-  return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src="/images/polloscampeon-icon.webp"
-      alt=""
-      width={size}
-      height={size}
-      aria-hidden="true"
-      className={`shrink-0 rounded-[22%] object-cover ${className}`}
-      style={{ width: size, height: size }}
-    />
-  );
-}
 
 export function ChickenMark({
   size = 44,

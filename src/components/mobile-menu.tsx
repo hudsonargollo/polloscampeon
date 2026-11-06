@@ -6,7 +6,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCart } from "./cart/cart-provider";
-import { Emblem } from "./brand/emblem";
+import { BrandLogo } from "./brand/logo";
 import { useBranchPicker } from "./branch-picker";
 
 const NAV = [
@@ -97,10 +97,7 @@ export function MobileMenu({ branchName = null }: { branchName?: string | null }
         >
         {/* Drawer header */}
         <div className="flex items-center justify-between border-b border-[var(--line)] bg-brand px-5 py-4">
-          <span className="flex items-center gap-2 text-light">
-            <Emblem size={24} accent="var(--color-accent-soft)" />
-            <span className="font-display text-lg font-extrabold tracking-tight">Pollos Campeón</span>
-          </span>
+          <BrandLogo className="h-7" />
           <button
             onClick={() => setOpen(false)}
             aria-label="Cerrar menú"

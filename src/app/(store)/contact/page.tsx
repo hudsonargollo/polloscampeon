@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Emblem } from "@/components/brand/emblem";
+import { BrandLogo } from "@/components/brand/logo";
 import { ContactForm } from "@/components/contact-form";
 import { getStoreSettings } from "@/lib/settings";
 import { whatsappUrl, phoneHref } from "@/lib/settings-shared";
@@ -25,7 +25,7 @@ export default async function ContactPage({ searchParams }: PageProps<"/contact"
   return (
     <div className="mx-auto max-w-4xl px-5 py-16">
       <div className="text-center">
-        <Emblem size={44} className="mx-auto text-accent-strong" />
+        <BrandLogo className="mx-auto h-11" />
         <span className="eyebrow mt-3 block">Estamos para ayudarte</span>
         <h1 className="mt-2 font-display text-4xl font-semibold text-ink sm:text-5xl">Contacto</h1>
         <p className="mx-auto mt-4 max-w-xl text-muted">

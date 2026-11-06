@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Emblem } from "@/components/brand/emblem";
+import { BrandLogo } from "@/components/brand/logo";
 import { SplitText } from "@/components/text-reveal";
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default function AboutPage() {
     <div className="bg-cream px-5 py-12">
       <div className="mx-auto max-w-4xl overflow-hidden rounded-2xl border border-[var(--line)] bg-panel">
         <div className="px-6 py-16 text-center sm:px-14">
-          <Emblem size={52} className="mx-auto text-brand" accent="var(--color-accent)" />
+          <BrandLogo className="mx-auto h-14" />
           <span className="eyebrow mt-5 block">Nuestra historia</span>
           <h1 className="mt-2 font-display text-4xl font-extrabold tracking-tight text-ink text-balance sm:text-5xl">
             <SplitText text="Comida rápida" />{" "}

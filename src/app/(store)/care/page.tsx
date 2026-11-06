@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Emblem } from "@/components/brand/emblem";
+import { BrandLogo } from "@/components/brand/logo";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/care" },
@@ -38,7 +38,7 @@ export default function CarePage() {
   return (
     <div className="mx-auto max-w-4xl px-5 py-16">
       <div className="text-center">
-        <Emblem size={40} className="mx-auto text-brand" accent="var(--color-accent)" />
+        <BrandLogo className="mx-auto h-10" />
         <span className="eyebrow mt-3 block">Ayuda</span>
         <h1 className="mt-2 font-display text-4xl font-extrabold tracking-tight text-ink">
           Ingredientes y cuidado

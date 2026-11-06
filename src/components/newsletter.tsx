@@ -1,7 +1,8 @@
 "use client";
 
 import { useActionState, useEffect } from "react";
-import { ChickenMark, Emblem } from "./brand/emblem";
+import { ChickenMark } from "./brand/emblem";
+import { BrandLogo } from "./brand/logo";
 import { useToast } from "@/components/ui/toast";
 import { subscribe, type InboundState } from "@/app/(store)/inbound-actions";
 
@@ -42,9 +43,7 @@ export function Newsletter() {
         />
 
         <div className="relative">
-          <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full border border-[rgba(255,233,92,0.45)] bg-[radial-gradient(circle,rgba(255,233,92,0.2),transparent_70%)] text-accent-soft">
-            <Emblem size={32} color="currentColor" accent="var(--color-accent-soft)" />
-          </span>
+          <BrandLogo className="mx-auto h-11" />
           <span className="mt-4 block text-xs font-semibold uppercase tracking-[0.28em] text-accent-soft">
             Novedades
           </span>

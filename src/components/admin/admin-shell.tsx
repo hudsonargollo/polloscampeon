@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
-import { Emblem } from "@/components/brand/emblem";
+import { BrandLogo } from "@/components/brand/logo";
 import { AdminNav } from "./admin-nav";
 import { AdminMobileNav } from "./admin-mobile-nav";
 import { OrderNotifications } from "./order-notifications";
@@ -73,14 +73,14 @@ export function AdminShell({
         }}
         className="hidden h-full shrink-0 flex-col overflow-hidden border-r border-[var(--line)] bg-brand text-light md:flex"
       >
-        {/* Brand — 3D logo; the square emblem is only for the collapsed rail. */}
+        {/* Brand — the full lockup, also in the collapsed rail. */}
         <Link
           href="/admin"
           aria-label="Pollos Campeón — panel"
-          className="flex h-16 shrink-0 items-center justify-center border-b border-[rgba(255,180,188,0.2)] px-4 md:h-20"
+          className="flex h-16 shrink-0 items-center justify-center border-b border-[rgba(255,180,188,0.2)] px-2 md:h-20"
         >
           {collapsed ? (
-            <Emblem size={34} className="shrink-0 text-accent" />
+            <BrandLogo className="h-6" />
           ) : (
             // eslint-disable-next-line @next/next/no-img-element
             <img

@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { Emblem } from "./brand/emblem";
+import { BrandLogo } from "./brand/logo";
 
 // Weekly-offer carousel: the copy and the photography rotate together like a
 // slideshow (seamless two-way loop, arrows, dots, autoplay progress, pause).
@@ -113,7 +113,7 @@ export function PromoSlider() {
       <div className="grid items-stretch lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
         {/* ── Text panel ── */}
         <div className="relative z-10 order-2 flex flex-col items-center justify-center px-6 py-16 text-center lg:order-1 lg:items-start lg:px-14 lg:py-24 lg:text-left">
-          <Emblem size={40} className="text-accent-soft" />
+          <BrandLogo className="h-10" />
 
           <div key={activeDot} className="contents">
             <span className="slide-text-in eyebrow mt-4 block text-accent-soft">

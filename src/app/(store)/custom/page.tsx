@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { OrnateFrame } from "@/components/ornate-frame";
-import { Emblem } from "@/components/brand/emblem";
+import { BrandLogo } from "@/components/brand/logo";
 import { CustomDesignForm } from "@/components/custom-design-form";
 import { getStoreSettings } from "@/lib/settings";
 import { whatsappUrl } from "@/lib/settings-shared";
@@ -23,7 +23,7 @@ export default async function CustomPage() {
     <div className="bg-cream px-5 py-12">
       <OrnateFrame className="mx-auto max-w-4xl bg-panel">
         <div className="px-6 py-16 text-center sm:px-14">
-          <Emblem size={48} className="mx-auto text-accent-strong" />
+          <BrandLogo className="mx-auto h-12" />
           <span className="eyebrow mt-4 block">Cumpleaños, eventos y empresas</span>
           <h1 className="mt-2 font-display text-4xl font-semibold text-ink sm:text-5xl">
             Pedidos para eventos

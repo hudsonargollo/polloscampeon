@@ -6,7 +6,7 @@ import { getCategoryBySlug, getProducts, getShopFacets } from "@/lib/catalog";
 import { getSelectedBranch } from "@/lib/branch";
 import { parseProductFilters } from "@/lib/filters";
 import { ShopBrowser } from "@/components/shop/shop-browser";
-import { Emblem } from "@/components/brand/emblem";
+import { BrandLogo } from "@/components/brand/logo";
 
 export async function generateMetadata({
   params,
@@ -46,7 +46,7 @@ export default async function CategoryPage({
   if (products.length === 0 && !hasFilters) {
     return (
       <div className="mx-auto max-w-2xl px-5 py-24 text-center">
-        <Emblem size={48} className="mx-auto text-brand" accent="var(--color-accent)" />
+        <BrandLogo className="mx-auto h-12" />
         <span className="eyebrow mt-4 block">{cat.name}</span>
         <h1 className="mt-2 font-display text-4xl font-extrabold tracking-tight text-ink sm:text-5xl">
           Próximamente
