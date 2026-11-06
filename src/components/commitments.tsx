@@ -1,5 +1,3 @@
-import { Emblem } from "./brand/emblem";
-
 const COMMITMENTS = [
   {
     title: "Hechos al momento",
@@ -27,7 +25,14 @@ export function Commitments() {
   return (
     <section className="bg-brand py-20 text-light">
       <div className="mx-auto max-w-6xl px-5 text-center">
-        <Emblem size={40} className="mx-auto text-accent-soft" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/polloscampeon-logo.webp"
+          alt="Pollos Campeón"
+          width={757}
+          height={329}
+          className="mx-auto h-10 w-auto"
+        />
         <span className="eyebrow mt-4 block text-accent-soft">Nuestro compromiso</span>
         <h2 className="mt-3 font-display text-4xl font-extrabold tracking-tight sm:text-5xl">
           Comida rápida, bien hecha
