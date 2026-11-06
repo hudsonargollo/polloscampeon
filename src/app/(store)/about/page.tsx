@@ -24,7 +24,7 @@ export default function AboutPage() {
           <span className="eyebrow mt-5 block">Nuestra historia</span>
           <h1 className="mt-2 font-display text-4xl font-extrabold tracking-tight text-ink text-balance sm:text-5xl">
             <SplitText text="Comida rápida" />{" "}
-            <span className="brand-text">de barrio</span>
+            <span className="text-brand">de barrio</span>
           </h1>
           <p className="mx-auto mt-6 max-w-2xl text-pretty text-ink/80">
             Pollos Campeón nació en Santa Cruz, Bolivia, con una idea simple: que comer rico no

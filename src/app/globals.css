@@ -161,14 +161,6 @@ p {
   font-weight: 400;
 }
 
-/* Brand gradient text utility */
-.brand-text {
-  background: linear-gradient(120deg, var(--color-brand), #ff5f75 55%, var(--color-accent-strong));
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-
 /* Thin uppercase label. Kept in the components layer so a text-* utility at
    the call site can override the default red (unlayered CSS would win). */
 @layer components {
