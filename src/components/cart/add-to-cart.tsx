@@ -86,7 +86,7 @@ export function AddToCart({ product }: { product: Omit<CartItem, "quantity"> }) 
         <button
           type="button"
           onClick={handleAdd}
-          className={`flex flex-1 items-center justify-center gap-2.5 rounded-full px-6 py-3.5 text-sm font-semibold uppercase tracking-[0.08em] transition duration-200 active:scale-[0.98] sm:px-8 ${
+          className={`flex flex-1 items-center justify-center gap-2 whitespace-nowrap rounded-full px-5 py-3.5 text-sm font-semibold uppercase tracking-[0.06em] transition duration-200 active:scale-[0.98] sm:px-7 ${
             added
               ? "bg-accent text-brand-deep shadow-[0_16px_34px_-16px_rgba(244,218,1,0.95)]"
               : "bg-brand text-light shadow-[0_16px_34px_-16px_rgba(234,9,41,0.8)] hover:bg-brand-deep"
@@ -94,13 +94,13 @@ export function AddToCart({ product }: { product: Omit<CartItem, "quantity"> }) 
         >
           {added ? <CheckIcon /> : <CartIcon />}
           <span>{added ? "Agregado" : "Agregar al carrito"}</span>
-          {!added && (
-            <span className="border-l border-light/30 pl-2.5 tabular-nums opacity-90">
-              {formatPrice(product.price * qty)}
-            </span>
-          )}
         </button>
       </div>
+
+      <p className="text-center text-xs text-muted sm:text-left">
+        {qty} × {formatPrice(product.price)} ={" "}
+        <span className="font-semibold tabular-nums text-ink">{formatPrice(product.price * qty)}</span>
+      </p>
 
       <button
         type="button"
