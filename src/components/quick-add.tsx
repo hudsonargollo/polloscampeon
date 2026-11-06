@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useCart } from "./cart/cart-provider";
 import { useToast } from "@/components/ui/toast";
 import type { ProductView } from "@/lib/types";
@@ -8,14 +8,19 @@ import { toCartLine } from "@/lib/cart";
 
 const MAX_QTY = 20;
 
-// Quantity stepper + compact add button used on product cards.
+// Quantity stepper + add button used on product cards.
 export function QuickAdd({ product }: { product: ProductView }) {
   const { add } = useCart();
   const toast = useToast();
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
+  const addedTimer = useRef<number | null>(null);
   const soldOut = product.stock <= 0;
   const max = Math.max(1, Math.min(product.stock, MAX_QTY));
+
+  useEffect(() => () => {
+    if (addedTimer.current) window.clearTimeout(addedTimer.current);
+  }, []);
 
   if (soldOut) {
     return (
@@ -26,9 +31,9 @@ export function QuickAdd({ product }: { product: ProductView }) {
   }
 
   return (
-    <div className="mt-3 flex items-center justify-between gap-1.5">
+    <div className="mt-3 flex items-center justify-between gap-2">
       <div
-        className="flex h-9 items-center rounded-full border border-[var(--line-strong)] bg-surface"
+        className="flex h-10 shrink-0 items-center rounded-full border border-[var(--line-strong)] bg-surface"
         role="group"
         aria-label={`Cantidad de ${product.name}`}
       >
@@ -37,7 +42,7 @@ export function QuickAdd({ product }: { product: ProductView }) {
           onClick={() => setQty((value) => Math.max(1, value - 1))}
           disabled={qty <= 1}
           aria-label="Quitar una unidad"
-          className="flex h-9 w-7 items-center justify-center rounded-l-full text-muted transition hover:text-brand disabled:cursor-not-allowed disabled:opacity-40 dark:hover:text-accent-soft"
+          className="flex h-10 w-8 items-center justify-center rounded-l-full text-base text-muted transition hover:text-brand disabled:cursor-not-allowed disabled:opacity-40 dark:hover:text-accent-soft"
         >
           −
         </button>
@@ -52,7 +57,7 @@ export function QuickAdd({ product }: { product: ProductView }) {
           onClick={() => setQty((value) => Math.min(max, value + 1))}
           disabled={qty >= max}
           aria-label="Agregar una unidad"
-          className="flex h-9 w-7 items-center justify-center rounded-r-full text-muted transition hover:text-brand disabled:cursor-not-allowed disabled:opacity-40 dark:hover:text-accent-soft"
+          className="flex h-10 w-8 items-center justify-center rounded-r-full text-base text-muted transition hover:text-brand disabled:cursor-not-allowed disabled:opacity-40 dark:hover:text-accent-soft"
         >
           +
         </button>
@@ -64,7 +69,8 @@ export function QuickAdd({ product }: { product: ProductView }) {
           add(toCartLine(product), qty);
           setQty(1);
           setAdded(true);
-          window.setTimeout(() => setAdded(false), 1500);
+          if (addedTimer.current) window.clearTimeout(addedTimer.current);
+          addedTimer.current = window.setTimeout(() => setAdded(false), 1500);
           toast.success(
             `${qty} × ${product.name} al carrito`,
             { title: "Agregado al carrito" }
@@ -72,20 +78,25 @@ export function QuickAdd({ product }: { product: ProductView }) {
         }}
         aria-label={`Agregar ${qty} ${product.name} al carrito`}
         title="Agregar al carrito"
-        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-accent text-brand-deep shadow-[0_10px_22px_-12px_rgba(244,218,1,0.9)] transition duration-300 hover:bg-accent-soft active:scale-95"
+        className={`flex h-10 flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-3.5 text-xs font-semibold uppercase tracking-[0.08em] transition duration-200 active:scale-[0.98] ${
+          added
+            ? "bg-accent text-brand-deep shadow-[0_12px_26px_-14px_rgba(244,218,1,0.95)]"
+            : "bg-brand text-light shadow-[0_12px_26px_-14px_rgba(234,9,41,0.8)] hover:bg-brand-deep"
+        }`}
       >
         {added ? (
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true">
             <path d="M5 12.5l4.5 4.5L19 6.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         ) : (
-          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
             <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 8H6" strokeLinecap="round" strokeLinejoin="round" />
             <circle cx="10" cy="20" r="1.4" fill="currentColor" stroke="none" />
             <circle cx="18" cy="20" r="1.4" fill="currentColor" stroke="none" />
             <path d="M14 9v5M11.5 11.5h5" strokeLinecap="round" />
           </svg>
         )}
+        <span>{added ? "Agregado" : "Agregar"}</span>
       </button>
     </div>
   );
