@@ -13,7 +13,7 @@
 set -u
 
 APP_DIR="${APP_DIR:-/var/www/polloscampeon}"
-PORT="${PORT:-3004}"
+PORT="${PORT:-3015}"
 HOST="${HOST:-0.0.0.0}"
 
 cd "$APP_DIR" || exit 1

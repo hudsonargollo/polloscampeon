@@ -7,15 +7,18 @@ Cloudflare no se usan para el sitio en vivo.
 
 | Elemento | Valor |
 | -------- | ----- |
-| URL pública | <https://polloscampeon.clubemkt.digital> |
-| Código fuente | `/root/ClubeMkt/polloscampeon` |
-| Build desplegado | `/var/www/polloscampeon` (`server.js`, `.next/`, `public/`) |
+| URL pública | <https://polloscampeon.clubemkt.digital> (también `.clubemkt.online`) |
+| Código fuente | `/root/ClubeMkt/polloscampeon-app` |
+| Build desplegado | `/var/www/polloscampeon` (árbol standalone: `server.js`, `node_modules/`, `.next/`, `public/`) |
 | Servicio | `polloscampeon.service` (systemd) |
-| Puerto interno | `3004` (`PORT` en la unit) |
-| Proxy | nginx `sites-enabled/polloscampeon` → `http://172.17.0.1:3004` |
-| Variables de entorno | `EnvironmentFile=/root/ClubeMkt/polloscampeon/.env` |
+| Puerto interno | `3015` (`PORT` en la unit — `3004` lo usa el otro store) |
+| Proxy | nginx `sites-enabled/polloscampeon` → `http://172.17.0.1:3015` |
+| Variables de entorno | `EnvironmentFile=/root/ClubeMkt/polloscampeon-app/.env` (chmod 600) |
 | Uploads | `UPLOAD_DIR=/var/www/polloscampeon-data/uploads` |
-| Base de datos | PostgreSQL (`DATABASE_URL` / `DIRECT_URL` en `.env`) |
+| Base de datos | contenedor Docker `polloscampeon-db` (postgres:15-alpine) en `127.0.0.1:5437`, volumen `polloscampeon-db-data`; contraseña en `/root/.polloscampeon-dbpass` |
+
+> El kit de marca (fotos originales del sitio, `data/*.json`, fichas) vive aparte,
+> en `/root/ClubeMkt/polloscampeon`. No es código y el despliegue no lo toca.
 
 `next.config.ts` genera `output: "standalone"` en el VPS (en Netlify/Vercel se
 desactiva porque esas plataformas empaquetan la app por su cuenta).
@@ -26,7 +29,7 @@ desactiva porque esas plataformas empaquetan la app por su cuenta).
 ## Desplegar
 
 ```bash
-cd /root/ClubeMkt/polloscampeon
+cd /root/ClubeMkt/polloscampeon-app
 git pull
 bash scripts/deploy.sh
 ```
@@ -39,7 +42,20 @@ El script:
 4. Copia el build standalone a `/var/www/polloscampeon` (sin `node_modules`) y
    sincroniza `public/`.
 5. Limpia `.next/cache` y reinicia `polloscampeon.service`.
-6. Comprueba `http://127.0.0.1:3004/` hasta obtener `200`.
+6. Comprueba `http://127.0.0.1:3015/` hasta obtener `200`.
+
+## Primera instalación (base de datos vacía)
+
+El script no carga datos. Después de crear el contenedor y la unit:
+
+```bash
+cd /root/ClubeMkt/polloscampeon-app
+npm install && npx prisma generate
+npx prisma migrate deploy
+npm run db:seed          # 4 categorías, 14 productos, 18 sucursales
+npm run db:create-admin  # ADMIN_EMAIL / ADMIN_PASSWORD del .env
+bash scripts/deploy.sh   # como arriba, con DEPLOY_DIR/SERVICE/HEALTH_URL
+```
 
 ## Operación
 
@@ -47,8 +63,8 @@ El script:
 systemctl status polloscampeon.service
 systemctl restart polloscampeon.service
 journalctl -u polloscampeon.service -f
-curl -I http://127.0.0.1:3004/
-curl -s http://127.0.0.1:3004/api/health
+curl -I http://127.0.0.1:3015/
+curl -s http://127.0.0.1:3015/api/health
 ```
 
 `start-store.sh` es solo un respaldo manual para arrancar el build desplegado;

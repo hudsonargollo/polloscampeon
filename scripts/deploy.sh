@@ -6,7 +6,7 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DEPLOY_DIR="${DEPLOY_DIR:-/var/www/polloscampeon}"
 SERVICE="${SERVICE:-polloscampeon.service}"
-HEALTH_URL="${HEALTH_URL:-http://127.0.0.1:3004/}"
+HEALTH_URL="${HEALTH_URL:-http://127.0.0.1:3015/}"
 
 cd "$ROOT"
 
