@@ -190,9 +190,21 @@ async function main() {
       "El pollo #1 de Bolivia",
       "Delivery en moto en Santa Cruz",
       "18 sucursales · Pide por WhatsApp",
+      "Club Campeón: junta 10 sellos y llévate 1 gratis",
       "Hecho al momento · Pago contra entrega",
     ],
     inventory: { lowStockThreshold: 5 },
+    loyalty: {
+      enabled: true,
+      name: "Club Campeón",
+      stampsToFree: 10,
+      eligible: "all",
+      eligibleSlugs: [],
+      pointsPer: 1,
+      pointsAmount: 10,
+      pointsOnShipping: false,
+      expiryDays: 0,
+    },
     notifications: { orderEmail: "" },
   };
 
@@ -201,6 +213,23 @@ async function main() {
     update: { value: settings },
     create: { key: "store", value: settings },
   });
+
+  // Starting rewards shop. Upserted by slug so the owner's edits (name, cost,
+  // stock) survive a re-seed.
+  const rewards = [
+    { slug: "botella-campeon", name: "Botella squeeze Campeón", description: "Botella reutilizable de la marca.", costPoints: 250, stock: 40, order: 1 },
+    { slug: "bolso-campeon", name: "Bolso de tela Campeón", description: "Bolso de algodón para el diario.", costPoints: 300, stock: 30, order: 2 },
+    { slug: "juguete-campeon", name: "Juguete para los más chicos", description: "Sorpresa de la marca para niños.", costPoints: 200, stock: 50, order: 3 },
+    { slug: "gorra-campeon", name: "Gorra Campeón", description: "Gorra con el logo de Campeón.", costPoints: 400, stock: 20, order: 4 },
+  ];
+  for (const r of rewards) {
+    await prisma.reward.upsert({
+      where: { slug: r.slug },
+      update: { name: r.name, description: r.description, costPoints: r.costPoints, order: r.order },
+      create: r,
+    });
+  }
+  console.log(`  ✔ ${rewards.length} Club Campeón rewards`);
 
   console.log("✅ Seed complete.");
 }
