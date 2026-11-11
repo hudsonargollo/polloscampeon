@@ -60,6 +60,8 @@ type PinVisual = {
   cone: THREE.MeshStandardMaterial;
   halo: THREE.MeshBasicMaterial;
   labelEl: HTMLDivElement;
+  nameEl: HTMLDivElement;
+  dirEl: HTMLAnchorElement;
 };
 
 function pinPosition(branch: MapBranch) {
@@ -398,14 +400,32 @@ function createPin(branch: MapBranch) {
   group.add(hit);
 
   const labelEl = document.createElement("div");
-  labelEl.className =
-    "pointer-events-none rounded-full border border-[rgba(244,218,1,0.45)] bg-[rgba(125,5,21,0.92)] px-2.5 py-1 text-[10px] font-semibold tracking-wide text-light shadow-[0_6px_18px_rgba(0,0,0,0.35)] backdrop-blur-sm transition-opacity duration-200";
-  labelEl.style.opacity = "0";
+  labelEl.className = "pointer-events-none flex flex-col items-center gap-1.5";
+
+  const nameEl = document.createElement("div");
+  nameEl.className =
+    "rounded-full border border-[rgba(244,218,1,0.45)] bg-[rgba(125,5,21,0.92)] px-2.5 py-1 text-[10px] font-semibold tracking-wide text-light shadow-[0_6px_18px_rgba(0,0,0,0.35)] backdrop-blur-sm transition-opacity duration-200";
+  labelEl.appendChild(nameEl);
+
+  const dirEl = document.createElement("a");
+  dirEl.className =
+    "pointer-events-auto hidden items-center gap-1 rounded-full bg-accent px-3 py-1.5 text-[11px] font-bold text-brand-deep shadow-[0_6px_18px_rgba(0,0,0,0.4)] transition hover:bg-accent-soft active:scale-95";
+  dirEl.target = "_blank";
+  dirEl.rel = "noopener noreferrer";
+  dirEl.setAttribute("aria-label", `Cómo llegar a ${branch.name} en Google Maps`);
+  dirEl.title = "Cómo llegar en Google Maps";
+  if (branch.latitude != null && branch.longitude != null) {
+    dirEl.href = `https://www.google.com/maps/dir/?api=1&destination=${branch.latitude},${branch.longitude}&travelmode=driving`;
+  }
+  dirEl.innerHTML =
+    '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="6" cy="18" r="2.4"/><circle cx="18" cy="6" r="2.4"/><path d="M8.4 18H14a4 4 0 0 0 0-8h-4a4 4 0 0 1 0-8h5.6" stroke-linecap="round"/></svg><span>Cómo llegar</span>';
+  labelEl.appendChild(dirEl);
+
   const label = new CSS2DObject(labelEl);
   label.position.set(0, 7.9, 0);
   group.add(label);
 
-  return { group, head: headMat, cone: coneMat, halo: haloMat, labelEl, hit };
+  return { group, head: headMat, cone: coneMat, halo: haloMat, labelEl, nameEl, dirEl, hit };
 }
 
 export const MapCanvas = forwardRef<MapHandle, Props>(function MapCanvas(
@@ -630,12 +650,12 @@ export const MapCanvas = forwardRef<MapHandle, Props>(function MapCanvas(
         const branch = branches.find((b) => b.slug === slug);
         if (!branch) continue;
         const isNearest = slug === nearest && slug !== selected;
-        pin.labelEl.textContent = branch.name;
+        pin.nameEl.textContent = branch.name;
         if (isNearest) {
           const tag = document.createElement("span");
           tag.textContent = " · más cercana";
           tag.style.color = "#ffe95c";
-          pin.labelEl.appendChild(tag);
+          pin.nameEl.appendChild(tag);
         }
       }
     };
@@ -654,9 +674,10 @@ export const MapCanvas = forwardRef<MapHandle, Props>(function MapCanvas(
         pin.halo.opacity = isSelected ? 0.7 : isNearest ? 0.48 : 0.26;
         const scale = isSelected ? 1.95 : isNearest ? 1.72 : 1.55;
         pin.group.scale.setScalar(scale);
-        pin.labelEl.style.background = isSelected ? "#f4da01" : "rgba(125,5,21,0.92)";
-        pin.labelEl.style.color = isSelected ? "#7d0515" : "#fff8f2";
-        pin.labelEl.style.borderColor = isSelected || isNearest ? "rgba(244,218,1,0.85)" : "rgba(244,218,1,0.35)";
+        pin.nameEl.style.background = isSelected ? "#f4da01" : "rgba(125,5,21,0.92)";
+        pin.nameEl.style.color = isSelected ? "#7d0515" : "#fff8f2";
+        pin.nameEl.style.borderColor = isSelected || isNearest ? "rgba(244,218,1,0.85)" : "rgba(244,218,1,0.35)";
+        pin.dirEl.style.display = isSelected && pin.dirEl.href ? "inline-flex" : "none";
       }
       updateLabels();
     };
